@@ -7,9 +7,9 @@ export default async function handler(
 ) {
   try {
     // Check Supabase connection
-    const { data, error } = await supabase
+    const { data, error, count } = await supabase
       .from('agent_registry')
-      .select('count(*)', { count: 'exact' });
+      .select('*', { count: 'exact', head: true });
 
     if (error) {
       throw new Error('Supabase connection failed');
@@ -20,7 +20,7 @@ export default async function handler(
       status: 'healthy',
       timestamp: new Date().toISOString(),
       supabaseConnected: true,
-      registeredAgents: data?.count || 0
+      registeredAgents: count || 0
     });
   } catch (err) {
     res.status(500).json({
