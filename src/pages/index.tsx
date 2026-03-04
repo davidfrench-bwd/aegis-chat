@@ -65,19 +65,25 @@ export default function Home() {
   const handleSendMessage = async () => {
     if (!selectedRoom || !newMessage.trim()) return;
 
-    const { error } = await supabase
+    const messageText = newMessage;
+    setNewMessage(''); // Clear input immediately
+
+    const { data, error } = await supabase
       .from('agent_chat_messages')
       .insert({
         room_id: selectedRoom.id,
         sender_agent: 'Aegis', // TODO: Dynamic sender
-        message: { text: newMessage },
+        message: { text: messageText },
         message_type: 'text'
-      });
+      })
+      .select();
 
     if (error) {
       console.error('Error sending message:', error);
-    } else {
-      setNewMessage('');
+      alert('Failed to send message');
+    } else if (data && data[0]) {
+      // Optimistically add the message to the UI
+      setMessages((prevMessages) => [...prevMessages, data[0] as AgentChatMessage]);
     }
   };
 
