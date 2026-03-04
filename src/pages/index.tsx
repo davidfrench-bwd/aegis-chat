@@ -51,7 +51,13 @@ export default function Home() {
         table: 'agent_chat_messages',
         filter: `room_id=eq.${selectedRoom.id}`
       }, (payload) => {
-        setMessages((prevMessages) => [...prevMessages, payload.new as AgentChatMessage]);
+        setMessages((prevMessages) => {
+          // Prevent duplicates by checking if message already exists
+          const newMessage = payload.new as AgentChatMessage;
+          const exists = prevMessages.some(msg => msg.id === newMessage.id);
+          if (exists) return prevMessages;
+          return [...prevMessages, newMessage];
+        });
       })
       .subscribe();
 
