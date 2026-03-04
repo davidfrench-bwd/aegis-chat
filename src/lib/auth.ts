@@ -1,13 +1,13 @@
-import { createClient } from '@supabase/supabase-js';
-import { Auth } from 'next-auth';
+import type { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export const authOptions = {
+export const authConfig = {
   providers: [
     CredentialsProvider({
       name: 'Agent Credentials',
@@ -28,8 +28,6 @@ export const authOptions = {
 
         if (error || !data) return null;
 
-        // Additional API key validation would go here
-        // For now, just check agent exists and is active
         return {
           id: data.id,
           name: data.name
@@ -39,21 +37,13 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      // Add agent details to session
-      session.user.id = token.id as string;
-      session.user.name = token.name as string;
-      return session;
-    },
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.name = user.name;
+      if (token.sub) {
+        session.user.id = token.sub;
       }
-      return token;
+      return session;
     }
   },
   pages: {
     signIn: '/auth/signin'
-  },
-  secret: process.env.NEXTAUTH_SECRET
-};
+  }
+} satisfies NextAuthConfig;
