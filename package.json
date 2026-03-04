@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:setup": "bash supabase-setup.sh"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +18,13 @@
     "@supabase/supabase-js": "^2.98.0",
     "@types/node": "^25.3.3",
     "@types/react": "^19.2.14",
+    "autoprefixer": "^10.4.27",
     "next": "^16.1.6",
+    "next-auth": "^4.24.13",
+    "postcss": "^8.5.8",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3"
   }
 }

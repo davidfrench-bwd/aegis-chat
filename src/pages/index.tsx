@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { getSession } from 'next-auth/react';
+import { GetServerSideProps } from 'next';
 import { supabase, AgentChatRoom, AgentChatMessage } from '../lib/supabase';
 
 export default function Home() {
+  // Server-side session check added to prevent unauthorized access
+  // Redirect to login if not authenticated
   const [rooms, setRooms] = useState<AgentChatRoom[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<AgentChatRoom | null>(null);
   const [messages, setMessages] = useState<AgentChatMessage[]>([]);

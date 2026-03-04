@@ -1,0 +1,66 @@
+name: Deploy Agent Chat System
+
+on:
+  push:
+    branches: 
+      - main
+      - staging
+  pull_request:
+    branches:
+      - main
+      - staging
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Run tests
+        run: npm test
+
+  deploy:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      # Determine deployment environment
+      - name: Set environment
+        id: set-env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+          else
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          vercel deploy \
+            ${{ steps.set-env.outputs.environment == 'production' && '--prod' || '' }} \
+            --token=$VERCEL_TOKEN \
+            --build-env NEXT_PUBLIC_SUPABASE_URL=$SUPABASE_URL \
+            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY=$SUPABASE_ANON_KEY
+
+      # Optional: Run post-deployment health check
+      - name: Health Check
+        run: |
+          sleep 30  # Wait for deployment
+          curl -f https://chat.davidfrench.io/api/health || exit 1
