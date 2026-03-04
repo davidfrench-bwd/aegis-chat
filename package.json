@@ -12,7 +12,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:init": "node --loader ts-node/esm scripts/initialize-database.ts",
+    "db:init": "node scripts/initialize-database.mjs",
     "vercel-build": "node scripts/vercel-build.js"
   },
   "dependencies": {
