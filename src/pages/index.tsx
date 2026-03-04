@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/react';
 import type { GetServerSideProps } from 'next';
-import { supabase, AgentChatRoom, AgentChatMessage } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
+import type { AgentChatRoom, AgentChatMessage } from '../lib/supabase';
 
 export default function Home() {
   // Server-side session check added to prevent unauthorized access
