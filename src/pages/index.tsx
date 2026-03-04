@@ -78,7 +78,7 @@ export default function Home() {
       .from('agent_chat_messages')
       .insert({
         room_id: selectedRoom.id,
-        sender_agent: 'Aegis', // TODO: Dynamic sender
+        sender_agent: 'David', // Messages from web UI are from David
         message: { text: messageText },
         message_type: 'text'
       })
