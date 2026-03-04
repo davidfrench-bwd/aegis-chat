@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getSession } from 'next-auth/react';
-import { GetServerSideProps } from 'next';
+import type { GetServerSideProps } from 'next';
 import { supabase, AgentChatRoom, AgentChatMessage } from '../lib/supabase';
 
 export default function Home() {
