@@ -1,14 +1,23 @@
 {
   "version": 2,
-  "buildCommand": "next build",
+  "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "devCommand": "next dev",
+  "devCommand": "npm run dev",
+  "framework": "nextjs",
   "routes": [
     { "src": "/api/health", "dest": "/api/health.js" }
   ],
   "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "@supabase_url",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase_anon_key",
-    "NEXTAUTH_SECRET": "@nextauth_secret"
-  }
+    "NEXT_PUBLIC_SUPABASE_URL": "https://ldkajdjdryzulrwdiygs.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxka2FqZGpkcnl6dWxyd2RpeWdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2MzI4ODAsImV4cCI6MjA4ODIwODg4MH0.yuD9TDRflxQ2r8lJwRcwAsImskj-A1KaxNu9nf9TiHA",
+    "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxka2FqZGpkcnl6dWxyd2RpeWdzIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjYzMjg4MCwiZXhwIjoyMDg4MjA4ODgwfQ.2X33cDD4Gx5n_KLqIj7qoWaeYdGrxBUvoxKc5Iy1bGU",
+    "NEXTAUTH_SECRET": "VQ3N4dJdWY3qSHmIEjpFAk6QHVvXJ4iZhFv2zF/uQJU=",
+    "NEXTAUTH_URL": "https://chat.davidfrench.io"
+  },
+  "builds": [
+    {
+      "src": "next.config.mjs",
+      "use": "@vercel/next"
+    }
+  ]
 }
